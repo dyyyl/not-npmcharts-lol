@@ -1,42 +1,77 @@
+import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { Input } from 'shared/components/Input';
-import { Prompt } from 'shared/components/Prompt';
-import { Repository } from 'shared/components/Repository';
-
-import { Main } from 'shared/layouts/Main';
-import { SideNav } from 'shared/layouts/SideNav';
-
+import { Input, Prompt, Repository } from 'shared/components';
+import { Main, SideNav } from 'shared/layouts';
+import { normalizedRepositoryRegex } from 'shared/regexes';
 import { GlobalStyles } from 'shared/styles/GlobalStyles';
+import {
+  generateRepositoryString,
+  generateRepositoryTuples,
+} from 'shared/utils';
 
-export const App = () => {
+/**
+ * General, top-level properties of Application.
+ */
+interface AppProps {
+  /**
+   * We only really care whether or not the url is valid for routing.
+   */
+  wrongUrl: boolean;
+}
+
+export const App = ({ wrongUrl }: AppProps) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    // General safeguard against incorrect URL: if the URL is not a valid,
+    // normalized repository string, redirect to an initial state.
+    if (wrongUrl) {
+      navigate('/');
+    }
+  }, [pathname, navigate, wrongUrl]);
+
   const repositories =
-    pathname !== '/'
-      ? pathname
-          .substring(1)
-          .split(',')
-          .map((repository) => repository.split('-'))
-      : null;
+    pathname !== '/' // if pathname is not '/'
+      ? generateRepositoryTuples(pathname)
+      : null; // otherwise, set repositories to null
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    // prevent the form from submitting, gotta keep that sweet app-like feel 😎
     event.preventDefault();
 
-    const formData = new FormData(event.currentTarget);
+    const formData = new FormData(event.currentTarget); // yeet form data
+    // for this next bit, just assume that the input is not-null (it's a required field)
     const repository = (formData.get('repository') as string)!.split('-');
 
-    const repositoryArray = [
-      ...(repositories as Array<Array<string>>),
-      repository,
-    ];
+    if (!normalizedRepositoryRegex.test(repository.join('-'))) {
+      navigate('/wrong-lol');
+      return;
+    }
 
-    const repositoryString = repositoryArray
-      .map((repository) => repository.join('-'))
-      .join(',');
+    // Are repositories already set? Let's add the new one to the list.
+    const repositoryArray = repositories
+      ? [...repositories, repository]
+      : [repository]; // otherwise, fill the array with the new repo
 
-    navigate(`/${repositoryString}`);
+    // Normalize the array of repositories into coherent string.
+    const repositoryString = generateRepositoryString(repositoryArray);
+
+    navigate(`/${repositoryString}`); // shunt user to the next url state
+  };
+
+  const handleRemoveRepository = (owner: string, name: string): void => {
+    const repository = `${owner}-${name}`;
+
+    const repositoryArray = repositories!
+      .map((tuple) => `${tuple[0]}-${tuple[1]}`)
+      .filter((repo) => repo !== repository)
+      .map((repositoryString) => repositoryString.split('-'));
+
+    const repositoryString = generateRepositoryString(repositoryArray);
+
+    navigate(`/${repositoryString}`); // shunt user to the next url state
   };
 
   return (
@@ -52,6 +87,7 @@ export const App = () => {
               key={repository[1]}
               owner={repository[0]}
               name={repository[1]}
+              handleRemoveRepository={handleRemoveRepository}
             />
           ))
         ) : (

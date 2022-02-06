@@ -1,9 +1,14 @@
 import { render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 
 import { App } from '.';
 
 test('renders an input element', () => {
-  render(<App />);
+  render(
+    <BrowserRouter>
+      <App wrongUrl={false} />
+    </BrowserRouter>,
+  );
 
   const inputElement = screen.getByPlaceholderText(
     /Search a GitHub Repository/i,

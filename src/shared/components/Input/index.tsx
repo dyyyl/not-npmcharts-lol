@@ -15,14 +15,21 @@ export const Input = ({ handleSubmit, name }: InputProps) => {
         type="text"
         name={name}
         placeholder="Search a GitHub Repository..."
+        required
       />
-      <Search
-        style={{
-          placeSelf: 'center',
-          color: '#37374a',
-          marginRight: '1.8rem',
-        }}
-      />
+      <button
+        type="submit"
+        style={{ background: 'transparent', border: 'none' }}
+      >
+        <Search
+          style={{
+            placeSelf: 'center',
+            color: '#37374a',
+            marginRight: '1.8rem',
+            cursor: 'pointer',
+          }}
+        />
+      </button>
     </Form>
   );
 };

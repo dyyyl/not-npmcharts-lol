@@ -11,13 +11,16 @@ import { Trash } from './Trash';
 interface RepositoryProps {
   owner: string;
   name: string;
+  handleRemoveRepository: (owner: string, name: string) => void;
 }
 
-export const Repository = ({ owner, name }: RepositoryProps) => {
+export const Repository = ({
+  owner,
+  name,
+  handleRemoveRepository,
+}: RepositoryProps) => {
   const color = generateColor(`${owner}/${name}`);
   const [style, setStyle] = useState({ display: 'none' });
-
-  const handleClick = () => alert('Closed');
 
   return (
     <RepositoryContainer
@@ -30,7 +33,10 @@ export const Repository = ({ owner, name }: RepositoryProps) => {
         <Info stars="148k" lastUpdated={5} />
       </TextContainer>
 
-      <Trash style={style} handleClick={handleClick} />
+      <Trash
+        style={style}
+        handleClick={() => handleRemoveRepository(owner, name)}
+      />
     </RepositoryContainer>
   );
 };
