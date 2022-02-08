@@ -26,6 +26,7 @@ html,
 body {
   height: 100%;
   font-size: 62.5%;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 /*

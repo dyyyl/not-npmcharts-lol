@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { generateColor } from 'shared/utils/generateColor';
+import { generateColor } from 'shared/utils';
 
 import { RepositoryContainer } from './RepositoryContainer';
 import { Frontmatter } from './Frontmatter';
@@ -30,7 +30,7 @@ export const Repository = ({
     >
       <TextContainer>
         <Frontmatter owner={owner} name={name} />
-        <Info stars="148k" lastUpdated={5} />
+        <Info owner={owner} name={name} />
       </TextContainer>
 
       <Trash

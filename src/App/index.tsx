@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import { Input, Prompt, Repository } from 'shared/components';
 import { Main, SideNav } from 'shared/layouts';
+import { getRepositories } from 'shared/queries';
 import { normalizedRepositoryRegex } from 'shared/regexes';
 import { GlobalStyles } from 'shared/styles/GlobalStyles';
 import {
@@ -24,6 +25,12 @@ export const App = ({ wrongUrl }: AppProps) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
+  // Original source of truth for the repositories listed in url.
+  const repositories =
+    pathname !== '/' // if pathname is not '/'
+      ? generateRepositoryTuples(pathname)
+      : null; // otherwise, set repositories to null
+
   useEffect(() => {
     // General safeguard against incorrect URL: if the URL is not a valid,
     // normalized repository string, redirect to an initial state.
@@ -32,15 +39,7 @@ export const App = ({ wrongUrl }: AppProps) => {
     }
   }, [pathname, navigate, wrongUrl]);
 
-  const repositories =
-    pathname !== '/' // if pathname is not '/'
-      ? generateRepositoryTuples(pathname)
-      : null; // otherwise, set repositories to null
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    // prevent the form from submitting, gotta keep that sweet app-like feel 😎
-    event.preventDefault();
-
     const formData = new FormData(event.currentTarget); // yeet form data
     // for this next bit, just assume that the input is not-null (it's a required field)
     const repository = (formData.get('repository') as string)!.split('-');
@@ -57,6 +56,8 @@ export const App = ({ wrongUrl }: AppProps) => {
 
     // Normalize the array of repositories into coherent string.
     const repositoryString = generateRepositoryString(repositoryArray);
+
+    console.log(getRepositories(repository[1]));
 
     navigate(`/${repositoryString}`); // shunt user to the next url state
   };
