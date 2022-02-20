@@ -1,16 +1,23 @@
+import { useRef } from 'react';
 import { Search } from 'react-feather';
 
 import { Form } from './Form';
 import { InputField } from './InputField';
 
 interface InputProps {
-  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  makeHandleSubmit: (
+    ref: React.RefObject<HTMLFormElement>,
+  ) => (event: React.FormEvent<HTMLFormElement>) => void;
   name: string;
 }
 
-export const Input = ({ handleSubmit, name }: InputProps) => {
+export const Input = ({ makeHandleSubmit, name }: InputProps) => {
+  const formRef = useRef(null);
+
+  const handleSubmit = makeHandleSubmit(formRef);
+
   return (
-    <Form action="#" onSubmit={handleSubmit}>
+    <Form action="#" ref={formRef} onSubmit={handleSubmit}>
       <InputField
         type="text"
         name={name}

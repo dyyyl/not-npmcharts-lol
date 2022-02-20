@@ -1,8 +1,9 @@
+import { Tuple } from 'shared/types';
 import { generateRepositoryString } from '.';
 
 describe('generateRepositoryString', () => {
   it('generates repository string from array of tuples', () => {
-    const repositoryTuples = [
+    const repositoryTuples: Array<Tuple> = [
       ['cool', 'guy'],
       ['cool', 'girl'],
       ['cool', 'cat'],

@@ -1,3 +1,4 @@
-export const generateRepositoryString = (
-  repositoryTupleArray: Array<Array<string>>,
-) => repositoryTupleArray.map((repository) => repository.join('-')).join(',');
+import { Tuple } from 'shared/types';
+
+export const generateRepositoryString = (repositoryTupleArray: Array<Tuple>) =>
+  repositoryTupleArray.map((repository) => repository.join('-')).join(',');

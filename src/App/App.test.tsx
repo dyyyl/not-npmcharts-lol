@@ -6,7 +6,7 @@ import { App } from '.';
 test('renders an input element', () => {
   render(
     <BrowserRouter>
-      <App wrongUrl={false} />
+      <App />
     </BrowserRouter>,
   );
 

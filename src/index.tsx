@@ -9,8 +9,7 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/wrong-lol" element={<App wrongUrl={true} />} />
-        <Route path="*" element={<App wrongUrl={false} />} />
+        <Route path="*" element={<App />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,

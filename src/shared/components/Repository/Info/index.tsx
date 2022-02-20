@@ -1,10 +1,9 @@
-import { OctokitResponse } from '@octokit/types';
-import { components } from '@octokit/openapi-types';
 import { useEffect, useState } from 'react';
 import { Star } from 'react-feather';
 
 import { getRepository } from 'shared/queries';
 import { formatCount, formatDate } from 'shared/utils';
+import { RepositoryResponse } from 'shared/types';
 
 import { InfoContainer } from './InfoContainer';
 import { LastUpdated } from './LastUpdated';
@@ -16,18 +15,11 @@ interface InfoProps {
 }
 
 export const Info = ({ owner, name }: InfoProps) => {
-  const [repository, setRepository] =
-    useState<OctokitResponse<components['schemas']['nullable-repository']>>();
+  const [repository, setRepository] = useState<RepositoryResponse>();
 
   useEffect(() => {
     getRepository(owner, name)
-      .then((repo) =>
-        setRepository(
-          repo as OctokitResponse<
-            components['schemas']['nullable-repository'] // ugly typecast blame gh
-          >,
-        ),
-      )
+      .then((repo) => setRepository(repo as RepositoryResponse))
       .catch((error) => console.error(error));
   }, [owner, name]);
 
