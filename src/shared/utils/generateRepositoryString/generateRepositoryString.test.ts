@@ -9,7 +9,7 @@ describe('generateRepositoryString', () => {
       ['cool', 'cat'],
       ['cool', 'dog'],
     ];
-    const expectedRepositoryString = 'cool-guy,cool-girl,cool-cat,cool-dog';
+    const expectedRepositoryString = 'cool_guy,cool_girl,cool_cat,cool_dog';
 
     const repositoryString = generateRepositoryString(repositoryTuples);
 

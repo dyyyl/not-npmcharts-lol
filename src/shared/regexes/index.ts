@@ -1,1 +1,0 @@
-export { normalizedRepositoryRegex } from './normalizedRepositoryRegex';

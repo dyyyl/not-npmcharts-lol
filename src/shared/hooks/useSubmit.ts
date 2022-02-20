@@ -20,10 +20,10 @@ export const useSubmit =
     const formData = new FormData(event.currentTarget); // yeet form data
 
     // for this next bit, just assume that the input is not-null (it's a required field)
-    const repository = (formData.get('repository') as string)!.split('-') as Tuple;
+    const repository = (formData.get('repository') as string)!.split('_') as Tuple;
 
     // clear input if repo exists
-    if (repositories?.map((repo) => repo.join('-')).includes(repository.join('-'))) {
+    if (repositories?.map((repo) => repo.join('_')).includes(repository.join('_'))) {
       formRef.current!.reset(); // reset the form
       formRef.current?.focus(); // focus the form
       return;

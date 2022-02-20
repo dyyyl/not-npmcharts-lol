@@ -1,20 +1,18 @@
-// import { normalizedRepositoryRegex } from 'shared/regexes';
 import { Tuple } from 'shared/types';
 
 const normalizeRepository = (repository: string): Tuple => {
-  const [owner, ...rest] = repository.split('-'); // we don't want to strip dashes from repo names
-  const name = rest.join('-'); // so stictch those back together if relevant
-  return [owner, name]; // return the tuple
+  const [owner, repo] = repository.split('_'); // we don't want to strip dashes from repo names
+  return [owner, repo]; // return the tuple
 };
 
-// const normalizeRepositories = (tuple: Tuple): boolean => {
-//   console.log(normalizedRepositoryRegex.test(tuple.join('-')));
-//   return normalizedRepositoryRegex.test(tuple.join('-'));
-// };
+const normalizeRepositories = (tuple: Tuple): boolean => {
+  const [owner, repo] = tuple; // really, we just need to know both elements exist
+  return owner && repo ? true : false;
+};
 
 export const generateRepositoryTuples = (pathname: string): Array<Tuple> =>
   pathname
     .substring(1) // remove the leading '/'
     .split(',') // split the pathname into an array of strings
-    .map(normalizeRepository);
-// .filter(normalizeRepositories); // TODO remove duplicates (Map?)
+    .map(normalizeRepository)
+    .filter(normalizeRepositories);
