@@ -1,6 +1,7 @@
 import debounce from 'lodash/debounce';
 import { useRef, useState } from 'react';
 import { getRepositories } from 'shared/queries';
+import { OctokitRepository } from 'shared/types';
 
 import { Form } from './Form';
 import { Hints } from './Hints';
@@ -31,7 +32,7 @@ export const Input = ({ makeHandleSubmit, name }: InputProps) => {
    */
   const handleSubmit = makeHandleSubmit(formRef);
 
-  const [hints, setHints] = useState<any>();
+  const [hints, setHints] = useState<Array<OctokitRepository> | null>(null);
 
   /**
    * Handle input field change, and debounce to prevent excessive requests.
@@ -47,8 +48,8 @@ export const Input = ({ makeHandleSubmit, name }: InputProps) => {
     if (query === '') {
       setHints(null);
     } else {
-      const data = await getRepositories(query); // otherwise,
-      setHints(data); // fill with repo data.
+      const repositories = await getRepositories(query); // otherwise,
+      setHints(repositories.data.items as Array<OctokitRepository>); // fill with repo data.
     }
   };
 

@@ -4,7 +4,7 @@ import { HintItem } from './HintItem';
 import { HintsContainer } from './HintsContainer';
 
 interface HintsProps {
-  hints: any;
+  hints: Array<OctokitRepository>;
 }
 
 /**
@@ -15,8 +15,11 @@ interface HintsProps {
 export const Hints = ({ hints }: HintsProps) => (
   <HintsContainer>
     {hints &&
-      hints.data?.items.map((repository: OctokitRepository) => (
-        <HintItem key={repository?.node_id}>
+      hints.map((repository: OctokitRepository) => (
+        <HintItem
+          key={repository?.node_id}
+          onClick={() => console.log({ repository })}
+        >
           {repository?.owner.login}/{repository?.name}
         </HintItem>
       ))}

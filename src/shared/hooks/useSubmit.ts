@@ -1,3 +1,4 @@
+import { FormEvent, RefObject } from 'react';
 import { NavigateFunction } from 'react-router-dom';
 
 import { Tuple } from 'shared/types';
@@ -13,8 +14,8 @@ import { generateRepositoryString } from 'shared/utils';
  */
 export const useSubmit =
   (repositories: Array<Tuple> | null, navigate: NavigateFunction) =>
-  (formRef: React.RefObject<HTMLFormElement>) =>
-  (event: React.FormEvent<HTMLFormElement>) => {
+  (formRef: RefObject<HTMLFormElement>) =>
+  (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // prevent default form submission
 
     const formData = new FormData(event.currentTarget); // yeet form data
