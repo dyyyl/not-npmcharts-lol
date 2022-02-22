@@ -16,16 +16,25 @@ interface RepositoryProps {
   handleRemoveRepository: (owner: string, name: string) => void;
 }
 
+/**
+ * Card responsible for displaying repository information.
+ * @param owner - owner of repository
+ * @param name - name of repository
+ * @param handleRemoveRepository - callback to remove repository from URL state.
+ */
 export const Repository = ({
   owner,
   name,
   handleRemoveRepository,
-}: RepositoryProps) => {
+}: RepositoryProps): JSX.Element => {
+  // Hash color by repo name and owner for consistent color across renders.
   const color = generateColor(`${owner}/${name}`);
+  // Some JS magic to conditionally render the trash icon button.
   const [style, setStyle] = useState({ display: 'none' });
 
   const [repository, setRepository] = useState<RepositoryResponse>();
 
+  // Fetch repository data on mount.
   useEffect(() => {
     getRepository(owner, name)
       .then((repo) => setRepository(repo as RepositoryResponse))

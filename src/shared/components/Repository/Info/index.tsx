@@ -11,8 +11,12 @@ interface InfoProps {
   repository?: RepositoryResponse;
 }
 
-export const Info = ({ repository }: InfoProps) => {
-  // cheeky typeguard for style
+/**
+ * Information about a repository including stargazer count and formatted time of last update.
+ * @param repository - Queried repository data.
+ */
+export const Info = ({ repository }: InfoProps): JSX.Element | null => {
+  // cheeky typeguards for style
   if (repository?.data)
     return (
       <InfoContainer>

@@ -7,7 +7,12 @@ interface FrontmatterProps {
   name: string;
 }
 
-export const Frontmatter = ({ owner, name }: FrontmatterProps) => {
+/**
+ * Heading of a repository card.
+ * @param {string} owner - Owner of repository
+ * @param {string} name - Name of repository
+ */
+export const Frontmatter = ({ owner, name }: FrontmatterProps): JSX.Element => {
   return (
     <FrontmatterContainer>
       <Owner>{owner} /</Owner>

@@ -13,10 +13,11 @@ export const useRemoveRepository =
   (owner: string, name: string): void => {
     const repository = `${owner}-${name}`;
 
+    // If replositories are not set, then there is nothing to remove.
     const repositoryArray = repositories!
       .map(([tupleOwner, tupleName]) => `${tupleOwner}-${tupleName}`)
-      .filter((repo) => repo !== repository)
-      .map((repositoryString) => repositoryString.split('-') as Tuple);
+      .filter((repo) => repo !== repository) // otherwise, filter out repo to be removed
+      .map((repositoryString) => repositoryString.split('-') as Tuple); // normalize into repositories tuples
 
     const repositoryString = generateRepositoryString(repositoryArray);
 

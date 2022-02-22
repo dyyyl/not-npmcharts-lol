@@ -16,8 +16,17 @@ export const App = () => {
       ? generateRepositoryTuples(pathname)
       : null; // otherwise, set repositories to null
 
+  /**
+   * First partial application of useSubmit.
+   * @param {React.RefObject<HTMLFormElement>} formRef - React ref for the form element.
+   */
   const makeHandleSubmit = useSubmit(repositories, navigate);
 
+  /**
+   * First and only partial application of useRemoveRepository.
+   * @param {string} owner - The owner of the repository.
+   * @param {string} name - The name of the repository.
+   */
   const handleRemoveRepository = useRemoveRepository(repositories, navigate);
 
   return (

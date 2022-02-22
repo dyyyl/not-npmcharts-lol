@@ -7,8 +7,8 @@ import { generateRepositoryString } from 'shared/utils';
  * Handles the submission of the "form", Partially Applied.
  * @param {Array<Tuple>} repositories - The source of truth for repos in URL
  * @param {NavigateFunction} navigate - The navigate function
- * @param {HTMLFormElement} formRef - Reference to the form
- * @param event generic (lol) FormEvent
+ * @param {React.RefObject<HTMLFormElement>} formRef - Reference to the form
+ * @param {React.FormEvent<HTMLFormElement>} event generic (lol) FormEvent
  * @returns `the inky dark  v o i d`
  */
 export const useSubmit =
