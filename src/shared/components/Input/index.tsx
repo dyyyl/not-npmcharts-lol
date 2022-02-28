@@ -1,5 +1,5 @@
 import debounce from 'lodash/debounce';
-import { useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { getRepositories } from 'shared/queries';
 import { OctokitRepository } from 'shared/types';
 
@@ -12,7 +12,7 @@ import { SubmitButton } from './SubmitButton';
 interface InputProps {
   makeHandleSubmit: (
     ref: React.RefObject<HTMLFormElement>,
-  ) => (event: React.FormEvent<HTMLFormElement>) => void;
+  ) => (query: string) => void;
   name: string;
 }
 
@@ -32,7 +32,8 @@ export const Input = ({ makeHandleSubmit, name }: InputProps) => {
    */
   const handleSubmit = makeHandleSubmit(formRef);
 
-  const [hints, setHints] = useState<Array<OctokitRepository> | null>(null);
+  const [hints, setHints] = useState<Array<OctokitRepository>>([]);
+  const [activeHint, setActiveHint] = useState<number>(0);
 
   /**
    * Handle input field change, and debounce to prevent excessive requests.
@@ -44,37 +45,78 @@ export const Input = ({ makeHandleSubmit, name }: InputProps) => {
     // Pesky whitespace.
     const query = event.target.value.trim();
 
-    // If query is empty, clear hints.
-    if (query === '') {
-      setHints(null);
+    // If query is empty (or too short to matter), clear hints.
+    if (query === '' || query.length <= 1) {
+      setHints([]);
     } else {
+      setActiveHint(0); // Reset active hint on input change.
       const repositories = await getRepositories(query); // otherwise,
       setHints(repositories.data.items as Array<OctokitRepository>); // fill with repo data.
     }
+  };
+
+  /**
+   * Okay let's put it all together now!
+   */
+  const triggerSubmit = () => {
+    setActiveHint(0); // Reset active hint on submit.
+    const { owner, name } = hints[activeHint]!; // Get active hint.
+    setHints([]); // Clear hints.
+    handleSubmit(`${owner.login}_${name}`); // Submit query.
   };
 
   return (
     <Form
       action="#"
       ref={formRef}
-      showHints={Boolean(hints)}
-      onSubmit={handleSubmit}
+      showHints={hints.length > 0}
+      onSubmit={(event) => event.preventDefault()}
     >
       <InputField
         type="text"
         name={name}
         placeholder="Search a GitHub Repository..."
-        onChange={debounce(handleChange, 500)}
-        showHints={Boolean(hints)}
+        onChange={debounce(handleChange, 300)}
+        onKeyDown={(event: React.KeyboardEvent) => {
+          switch (event.key) {
+            case 'Enter':
+              if (hints[activeHint]) {
+                triggerSubmit();
+                break;
+              } else {
+                break; // Do nothing if there is nothing to be done.
+              }
+
+            case 'ArrowDown':
+              if (hints.length > 0 && activeHint + 1 !== hints.length)
+                setActiveHint(activeHint + 1);
+              break;
+
+            case 'ArrowUp':
+              if (hints.length > 0 && activeHint !== 0)
+                setActiveHint(activeHint - 1);
+              break;
+
+            default:
+              break;
+          }
+        }}
+        showHints={hints.length > 0}
         autoComplete="off"
-        required
       />
 
       <SubmitButton type="submit">
         <SearchIcon />
       </SubmitButton>
 
-      {hints && <Hints hints={hints} />}
+      {hints.length > 0 && (
+        <Hints
+          hints={hints}
+          activeHint={activeHint}
+          setActiveHint={setActiveHint}
+          triggerSubmit={triggerSubmit}
+        />
+      )}
     </Form>
   );
 };

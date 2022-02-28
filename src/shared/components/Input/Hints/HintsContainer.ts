@@ -8,7 +8,7 @@ export const HintsContainer = styled.ul`
   width: 100%;
   list-style: none;
   font-size: 1.6rem;
-  padding: 1rem 0;
+  padding: 0;
+  padding-top: 2px; /* Adjust for outline */
   display: grid;
-  gap: 1rem;
 `;

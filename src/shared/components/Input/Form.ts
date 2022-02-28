@@ -13,5 +13,8 @@ export const Form = styled.form<FormProps>`
   gap: 1rem;
   background: #ffffff;
 
-  ${({ showHints }) => !showHints && `border-radius: 0.4rem;`}
+  ${({ showHints }) =>
+    showHints
+      ? `border-radius: 0.4rem; border-bottom-right-radius: 0`
+      : `border-radius: 0.4rem;`}
 `;

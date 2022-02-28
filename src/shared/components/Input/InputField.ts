@@ -13,9 +13,7 @@ export const InputField = styled.input<InputFieldProps>`
   border: none;
   z-index: 100;
   ${({ showHints }) =>
-    !showHints &&
-    `
-      border-top-left-radius: 0.4rem;
-      border-bottom-left-radius: 0.4rem;
-  `}
+    showHints
+      ? `border-radius: 0.4rem; border-bottom-left-radius: 0;`
+      : `border-radius: 0.4rem;`}
 `;

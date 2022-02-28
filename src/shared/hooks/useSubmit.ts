@@ -1,4 +1,4 @@
-import { FormEvent, RefObject } from 'react';
+import { RefObject } from 'react';
 import { NavigateFunction } from 'react-router-dom';
 
 import { Tuple } from 'shared/types';
@@ -9,19 +9,15 @@ import { generateRepositoryString } from 'shared/utils';
  * @param {Array<Tuple>} repositories - The source of truth for repos in URL
  * @param {NavigateFunction} navigate - The navigate function
  * @param {React.RefObject<HTMLFormElement>} formRef - Reference to the form
- * @param {React.FormEvent<HTMLFormElement>} event generic (lol) FormEvent
+ * @param {string} query - query to grab repository data
  * @returns `the inky dark  v o i d`
  */
 export const useSubmit =
   (repositories: Array<Tuple> | null, navigate: NavigateFunction) =>
   (formRef: RefObject<HTMLFormElement>) =>
-  (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); // prevent default form submission
-
-    const formData = new FormData(event.currentTarget); // yeet form data
-
+  (query: string) => {
     // for this next bit, just assume that the input is not-null (it's a required field)
-    const repository = (formData.get('repository') as string)!.split('_') as Tuple;
+    const repository = query.split('_') as Tuple;
 
     // clear input if repo exists
     if (repositories?.map((repo) => repo.join('_')).includes(repository.join('_'))) {

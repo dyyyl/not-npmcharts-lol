@@ -5,6 +5,9 @@ import { HintsContainer } from './HintsContainer';
 
 interface HintsProps {
   hints: Array<OctokitRepository>;
+  activeHint: number;
+  setActiveHint: (index: number) => void;
+  triggerSubmit: () => void;
 }
 
 /**
@@ -12,16 +15,24 @@ interface HintsProps {
  * @param hints - array of repositpories
  * @returns ListBox of repositories to hint to users
  */
-export const Hints = ({ hints }: HintsProps) => (
+export const Hints = ({
+  hints,
+  activeHint,
+  setActiveHint,
+  triggerSubmit,
+}: HintsProps) => (
   <HintsContainer>
-    {hints &&
-      hints.map((repository: OctokitRepository) => (
+    {hints.map((repository: OctokitRepository, index) => {
+      return (
         <HintItem
           key={repository?.node_id}
-          onClick={() => console.log({ repository })}
+          active={activeHint === index}
+          onClick={triggerSubmit}
+          onMouseEnter={() => setActiveHint(index)}
         >
           {repository?.owner.login}/{repository?.name}
         </HintItem>
-      ))}
+      );
+    })}
   </HintsContainer>
 );
