@@ -1,5 +1,7 @@
 import { OctokitRepository } from 'shared/types';
 import { HintItem } from './HintItem';
+import { HintName } from './HintName';
+import { HintOwner } from './HintOwner';
 
 import { HintsContainer } from './HintsContainer';
 
@@ -30,7 +32,8 @@ export const Hints = ({
           onClick={triggerSubmit}
           onMouseEnter={() => setActiveHint(index)}
         >
-          {repository?.owner.login}/{repository?.name}
+          <HintOwner>{repository?.owner.login}</HintOwner>/
+          <HintName>{repository?.name}</HintName>
         </HintItem>
       );
     })}

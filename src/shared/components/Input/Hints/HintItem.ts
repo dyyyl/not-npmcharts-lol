@@ -10,6 +10,9 @@ export const HintItem = styled.li<HintItemProps>`
   text-overflow: ellipsis;
   padding: 1rem 2.4rem;
 
+  display: flex;
+  gap: 0.4rem;
+
   ${({ active }) => active && 'background-color: #ececf6;'}
 
   &:hover {
