@@ -1,5 +1,7 @@
 # NOT-NPMCHARTS-LOL (for real though this has nothing to do with NPM)
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/69638333-1238-464b-89b2-e183346e78bf/deploy-status)](https://app.netlify.com/sites/not-npmcharts-lol/deploys)
+
 This project showcases the wonder and glory of GitHub's [OctoKit SDK](https://github.com/octokit).
 
 ## Available Scripts
