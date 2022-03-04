@@ -28,7 +28,7 @@ export const Repository = ({
   handleRemoveRepository,
 }: RepositoryProps): JSX.Element => {
   // Hash color by repo name and owner for consistent color across renders.
-  const color = generateColor(`${owner}/${name}`);
+  const color = generateColor(`${owner}_${name}`);
   // Some JS magic to conditionally render the trash icon button.
   const [style, setStyle] = useState({ display: 'none' });
 

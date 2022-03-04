@@ -5,13 +5,24 @@ import { generateRepositoryString } from 'shared/utils';
 
 /**
  * Remove a repository from the list of repositories, Partially Applied.
- * @param owner account name of the repository owner
- * @param name name of the repository
+ * @param {string} graphData - Array of data to graph.
+ * @param {string} setGraphData - You known what this is.
+ * @param {string} repositories - The source of truth for all Repositories.
+ * @param {string} navigate - The navigation function.
  */
 export const useRemoveRepository =
-  (repositories: Array<Tuple> | null, navigate: NavigateFunction) =>
+  (
+    graphData: Array<Record<string, unknown>>,
+    setGraphData: any,
+    repositories: Array<Tuple> | null,
+    navigate: NavigateFunction,
+  ) =>
   (owner: string, name: string): void => {
     const repository = `${owner}_${name}`;
+
+    // Remove from graphable data.
+    const newGraphData = graphData.filter((data) => data.id !== repository);
+    setGraphData(newGraphData);
 
     // If replositories are not set, then there is nothing to remove.
     const repositoryArray = repositories!
